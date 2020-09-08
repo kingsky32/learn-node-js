@@ -1,12 +1,19 @@
 const http = require("http");
+const fs = require("fs");
 
-http
+const server = http
   .createServer((req, res) => {
     console.log("서버 실행");
-    res.write("<h1>Hello Node!</h1>");
-    res.write("<h2>Hello JS!</h2>");
-    res.end("<p>Hello Server!</p>");
+    fs.readFile("./server2.html", (err, data) => {
+      if (err) throw err;
+      res.end(data);
+    });
   })
-  .listen(8080, () => {
-    console.log("Success Open Server!: http://localhost:8080");
-  });
+  .listen(8080);
+
+server.on("listening", () => {
+  console.log("Success Open Server!: http://localhost:8080");
+});
+server.on("error", err => {
+  console.error(err);
+});
